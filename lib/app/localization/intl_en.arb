@@ -1,0 +1,20 @@
+{
+  "@@locale": "en",
+  "error": "error",
+  "goToBegging": "Go to begging",
+  "home": "Home",
+  "business": "Business",
+  "school": "School",
+  "settings": "Settings",
+  "flutterDemo": "Flutter Demo",
+  "logIn": "Log in",
+  "enterEmail": "Enter E-mail",
+  "enterPassword": "Enter password",
+  "mainScreen": "Main Screen",
+  "businessView": "Business view",
+  "homeView": "Home view",
+  "settingsView": "Settings view",
+  "schoolView": "School view",
+  "homeDetails": "Home details",
+  "register": "Register"
+}

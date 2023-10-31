@@ -1,0 +1,5 @@
+#!/bin/bash
+firebase appdistribution:distribute build/app/outputs/flutter-apk/app-"${FLAVOR_NAME}"-release.apk \
+--token "${FIREBASE_TOKEN}" \
+--app "${FIREBASE_APP}" \
+--groups "appolica"

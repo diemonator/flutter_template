@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -e
+
+DEFINES="$(./defines)"
+FLUTTER_ROOT_PACKAGE="$(./main_package)"
+
+# goto main flutter package
+cd "$FLUTTER_ROOT_PACKAGE" || exit 1
+
+# Build APK
+flutter build apk --flavor "${FLAVOR_NAME}" --build-number "${BITBUCKET_BUILD_NUMBER}" \
+--dart-define=FLAVOR="${FLAVOR_NAME}" \
+--dart-define=VERSION="${BITBUCKET_BUILD_NUMBER}" \
+"${DEFINES}" || exit 1

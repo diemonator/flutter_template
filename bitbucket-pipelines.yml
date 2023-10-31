@@ -1,0 +1,145 @@
+image: public.ecr.aws/j7e3x4p5/flutter-build:30
+pipelines:
+  branches:
+    develop:
+      - parallel:
+          - step:
+              name: Upload Dev APK
+              deployment: Develop-Android
+              runs-on:
+                - self.hosted
+                - linux
+              caches:
+                - gradle
+              size:
+                2x
+              script:
+                - ./downloadKeystore
+                - ./setupFlutter
+                - source ./assemble
+                - ./run_build_runner_packages
+                - ./buildApk
+                - ./artefactOutputPath
+                - ./uploadToFirebaseGradle
+              artifacts:
+                - build/**/app*.apk
+                - build/reports/**
+          - step:
+              name: Upload Dev IPA
+              deployment: Develop-iOS
+              runs-on:
+                - self.hosted
+                - macos
+              artifacts:
+                download: false
+              script:
+                - ./setupFlutter
+                - ./setupXcode
+                - ./pub_get_packages
+                - ./run_build_runner_packages
+                - ./setupFastlane
+                - ./uploadToTestflight
+    master:
+      - parallel:
+          - step:
+              name: Upload Staging APK
+              deployment: Staging-Android
+              runs-on:
+                - self.hosted
+                - linux
+              caches:
+                - gradle
+              size:
+                2x
+              script:
+                - ./downloadKeystore
+                - ./setupFlutter
+                - source ./assemble
+                - ./run_build_runner_packages
+                - ./buildApk
+                - ./artefactOutputPath
+                - ./uploadToFirebaseGradle
+              artifacts:
+                - build/**/app*.apk
+                - build/reports/**
+          - step:
+              name: Upload Dev IPA
+              deployment: Staging-iOS
+              runs-on:
+                - self.hosted
+                - macos
+              script:
+                - ./setupFlutter
+                - ./setupXcode
+                - ./pub_get_packages
+                - ./run_build_runner_packages
+                - ./setupFastlane
+                - ./uploadToTestflight
+          - step:
+              name: Upload Prod AAB
+              trigger: manual
+              deployment: Production-Android
+              runs-on:
+                - self.hosted
+                - linux
+              caches:
+                - gradle
+              size:
+                2x
+              script:
+                - ./downloadKeystore
+                - ./publishToPlayStore
+              artifacts:
+                - build/**/app*.apk
+                - build/reports/**
+          - step:
+              name: Upload Dev IPA
+              deployment: Production-iOS
+              runs-on:
+                - self.hosted
+                - macos
+              script:
+                - ./setupFlutter
+                - ./setupXcode
+                - ./pub_get_packages
+                - ./run_build_runner_packages
+                - ./setupFastlane
+                - ./uploadToTestflight
+  pull-requests:
+    '**':
+      - parallel:
+          - step:
+              name: Build Dev APK
+              deployment: Develop-Android
+              runs-on:
+                - self.hosted
+                - linux
+              caches:
+                - gradle
+              size:
+                2x
+              script:
+                - ./downloadKeystore
+                - ./setupFlutter
+                - source ./assemble
+                - ./run_build_runner_packages
+                - ./buildApk
+                - ./artefactOutputPath
+              artifacts:
+                - build/**/app*.apk
+                - build/reports/**
+          - step:
+              name: Build Develop for Adhoc
+              deployment: Develop-iOS
+              runs-on:
+                - self.hosted
+                - macos
+              script:
+                - ./setupFlutter
+                - ./setupXcode
+                - ./pub_get_packages
+                - ./run_build_runner_packages
+                - ./setupFastlane
+                - ./buildAdhoc
+              artifacts:
+                - artifacts/*.ipa

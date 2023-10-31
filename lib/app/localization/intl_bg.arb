@@ -1,0 +1,20 @@
+{
+  "@@locale": "bg",
+  "error": "Грешка",
+  "goToBegging": "Отиди в началото",
+  "home": "У дома",
+  "business": "Бизнес",
+  "school": "Училище",
+  "settings": "Настройки",
+  "flutterDemo": "Flutter Demo",
+  "logIn": "Влез",
+  "enterEmail": "Въведи E-mail",
+  "enterPassword": "Въведи password",
+  "mainScreen": "Главен екран",
+  "businessView": "Бизнес място",
+  "homeView": "Главен екран",
+  "settingsView": "Екран с настройки",
+  "schoolView": "Училищен екран",
+  "homeDetails": "Главни детайли",
+  "register": "Регистрация"
+}

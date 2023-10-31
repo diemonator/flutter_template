@@ -1,0 +1,6 @@
+#!/bin/bash
+
+echo "\
+--dart-define="BASE_URL=${BASE_URL}" \
+--dart-define="BASE_AUTH_URL=${BASE_AUTH_URL}" \
+"
