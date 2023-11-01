@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:result_dart/result_dart.dart';
 
 import '../../app/utils/state_management/base_vm.dart';
-import '../../domain/services/app_localization.dart';
-import '../../domain/services/app_theme.dart';
-import '../../domain/services/auth.dart';
+import '../../domain/app_settings/services/app_localization.dart';
+import '../../domain/app_settings/services/app_theme.dart';
+import '../../domain/auth/services/auth.dart';
 import '../mappers/locale_mappers.dart';
 
 final class MainVM extends BaseVM {

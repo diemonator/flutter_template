@@ -5,7 +5,7 @@ sealed class Consts {
 
   static const String fontFamily = 'Roboto';
 
-  static const String userSettings = 'user_settings';
+  static const String appSettings = 'app_settings';
 
   static const String user = 'user';
 }

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../domain/services/auth.dart';
-import '../../../presentation/authentication/login/login_view.dart';
-import '../../../presentation/authentication/login/login_vm.dart';
+import '../../../presentation/auth/login/login_view.dart';
+import '../../../presentation/auth/login/login_vm.dart';
 import '../../../presentation/main/main_view.dart';
-import '../../../presentation/main/main_vm.dart';
-import '../../presentation/authentication/register/register_view.dart';
-import '../../presentation/authentication/register/register_vm.dart';
+import '../../domain/auth/services/auth.dart';
+import '../../presentation/auth/register/register_view.dart';
+import '../../presentation/auth/register/register_vm.dart';
 import '../../presentation/home_details/home_details_view.dart';
+import '../../presentation/main/main_vm.dart';
 import '../../presentation/main/tabs/business_view.dart';
 import '../../presentation/main/tabs/home_view.dart';
 import '../../presentation/main/tabs/school_view.dart';
@@ -17,11 +17,13 @@ import '../constants/app_routes.dart';
 import '../di/app_locator.dart';
 import '../utils/state_management/vm_builder.dart';
 
+part '../utils/navigation/app_navigation_util.dart';
+
 const _rootNavigatorKey = GlobalObjectKey<NavigatorState>('root');
 
 final GoRouter goRouterDelegate = GoRouter(
   navigatorKey: _rootNavigatorKey,
-  initialLocation: AppRoutes.loginPath,
+  initialLocation: AppRoutes.login.path,
   debugLogDiagnostics: true,
   refreshListenable: locator.inject<Auth>(),
   redirect: (context, state) => _authenticationRedirect(
@@ -31,16 +33,16 @@ final GoRouter goRouterDelegate = GoRouter(
   ),
   routes: [
     GoRoute(
-      name: AppRoutes.login,
-      path: AppRoutes.loginPath,
+      name: AppRoutes.login.name,
+      path: AppRoutes.login.path,
       builder: (context, state) => VMBuilder<LoginVM>(
         viewModelBuilder: locator.inject,
         child: LoginView(key: state.pageKey),
       ),
     ),
     GoRoute(
-      name: AppRoutes.register,
-      path: AppRoutes.registerPath,
+      name: AppRoutes.register.name,
+      path: AppRoutes.register.path,
       builder: (context, state) => VMBuilder<RegisterVM>(
         viewModelBuilder: locator.inject,
         child: RegisterView(key: state.pageKey),
@@ -55,8 +57,8 @@ final GoRouter goRouterDelegate = GoRouter(
         StatefulShellBranch(
           routes: [
             GoRoute(
-              name: AppRoutes.homeTab,
-              path: AppRoutes.homeTabPath,
+              name: AppRoutes.homeTab.name,
+              path: AppRoutes.homeTab.path,
               pageBuilder: (context, state) => NoTransitionPage<Widget>(
                 key: state.pageKey,
                 restorationId: state.pageKey.value,
@@ -65,8 +67,8 @@ final GoRouter goRouterDelegate = GoRouter(
               routes: [
                 GoRoute(
                   parentNavigatorKey: _rootNavigatorKey,
-                  name: AppRoutes.homeDetails,
-                  path: AppRoutes.homeDetailsPath,
+                  name: AppRoutes.homeDetails.name,
+                  path: AppRoutes.homeDetails.path,
                   builder: (context, state) => const HomeDetailsView(),
                 ),
               ],
@@ -76,8 +78,8 @@ final GoRouter goRouterDelegate = GoRouter(
         StatefulShellBranch(
           routes: [
             GoRoute(
-              name: AppRoutes.businessTab,
-              path: AppRoutes.businessTabPath,
+              name: AppRoutes.businessTab.name,
+              path: AppRoutes.businessTab.path,
               pageBuilder: (context, state) => NoTransitionPage<Widget>(
                 key: state.pageKey,
                 restorationId: state.pageKey.value,
@@ -89,8 +91,8 @@ final GoRouter goRouterDelegate = GoRouter(
         StatefulShellBranch(
           routes: [
             GoRoute(
-              name: AppRoutes.schoolTab,
-              path: AppRoutes.schoolTabPath,
+              name: AppRoutes.schoolTab.name,
+              path: AppRoutes.schoolTab.path,
               pageBuilder: (context, state) => NoTransitionPage<Widget>(
                 key: state.pageKey,
                 restorationId: state.pageKey.value,
@@ -102,8 +104,8 @@ final GoRouter goRouterDelegate = GoRouter(
         StatefulShellBranch(
           routes: [
             GoRoute(
-              name: AppRoutes.settingsTab,
-              path: AppRoutes.settingsTabPath,
+              name: AppRoutes.settingsTab.name,
+              path: AppRoutes.settingsTab.path,
               pageBuilder: (context, state) => NoTransitionPage<Widget>(
                 key: state.pageKey,
                 restorationId: state.pageKey.value,
@@ -116,22 +118,3 @@ final GoRouter goRouterDelegate = GoRouter(
     ),
   ],
 );
-
-String? _authenticationRedirect(
-  BuildContext _,
-  GoRouterState state,
-  final Auth auth,
-) {
-  final isLoggedIn = auth.isLoggedIn;
-  final goingToLogin = state.location == AppRoutes.loginPath;
-
-  if (!isLoggedIn && !goingToLogin) {
-    return AppRoutes.loginPath;
-  }
-
-  if (isLoggedIn && goingToLogin) {
-    return AppRoutes.homeTabPath;
-  }
-
-  return null;
-}

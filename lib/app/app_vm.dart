@@ -2,8 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import '../domain/services/app_localization.dart';
-import '../domain/services/app_theme.dart';
+import '../domain/app_settings/services/app_localization.dart';
+import '../domain/app_settings/services/app_theme.dart';
 import '../presentation/mappers/locale_mappers.dart';
 import 'localization/generated/l10n.dart';
 import 'utils/state_management/base_vm.dart';

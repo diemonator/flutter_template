@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../domain/models/theme_state.dart';
+import '../../domain/app_settings/models/theme_state.dart';
 
 extension ThemeMappers on ThemeState {
   ThemeMode toThemeMode() => switch (this) {

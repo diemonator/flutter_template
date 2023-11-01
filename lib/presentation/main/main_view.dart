@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../app/localization/generated/l10n.dart';
 import '../../app/utils/state_management/state_extensions.dart';
 import 'main_vm.dart';
-import 'models/tab_item_model.dart';
+import 'models/tab_items.dart';
 
 class MainView extends StatelessWidget {
   const MainView(this._navigationShell, {super.key});
@@ -25,9 +25,9 @@ class MainView extends StatelessWidget {
             value: viewModel.currentLocale,
             items: Lang.delegate.supportedLocales
                 .map(
-                  (e) => DropdownMenuItem<Locale>(
-                    value: e,
-                    child: Text(e.languageCode),
+                  (locale) => DropdownMenuItem<Locale>(
+                    value: locale,
+                    child: Text(locale.languageCode),
                   ),
                 )
                 .toList(growable: false),
@@ -87,7 +87,7 @@ class MainView extends StatelessWidget {
       body: _navigationShell,
       bottomNavigationBar: Builder(
         builder: (context) {
-          final tabItemModels = TabItemModel.of(context);
+          final tabItemModels = TabItems.of(context);
           final colorScheme = Theme.of(context).colorScheme;
 
           return BottomNavigationBar(
@@ -95,9 +95,7 @@ class MainView extends StatelessWidget {
             onTap: _navigationShell.goBranch,
             unselectedItemColor: colorScheme.onBackground,
             selectedItemColor: colorScheme.primary,
-            items: tabItemModels
-                .map((e) => e.bottomNavigationBarItem)
-                .toList(growable: false),
+            items: tabItemModels,
           );
         },
       ),

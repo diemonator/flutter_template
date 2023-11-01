@@ -8,12 +8,12 @@ class HomeView extends StatelessWidget {
   const HomeView({super.key});
 
   @override
-  Widget build(BuildContext context) => Center(
-        child: ElevatedButton(
-          onPressed: () {
-            context.goNamed(AppRoutes.homeDetails);
-          },
-          child: Text(Lang.of(context).homeView),
-        ),
-      );
+  Widget build(BuildContext context) {
+    return Center(
+      child: ElevatedButton(
+        onPressed: () => context.goNamed(AppRoutes.homeDetails.name),
+        child: Text(Lang.of(context).homeView),
+      ),
+    );
+  }
 }

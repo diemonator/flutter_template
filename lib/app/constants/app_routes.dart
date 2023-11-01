@@ -1,30 +1,21 @@
-sealed class AppRoutes {
-  static const String homeTab = 'home';
-  static const String homeTabPath = '/tab_home';
+/// Auth path.
+const String _authPath = 'auth';
+const String _tab = 'tab';
+const String _error = 'error';
 
-  static const String schoolTab = 'school';
-  static const String schoolTabPath = '/tab_school';
+enum AppRoutes {
+  homeTab('home', '/$_tab/home'),
+  schoolTab('school', '/$_tab/school'),
+  settingsTab('settings', '/$_tab/settings'),
+  businessTab('business', '/$_tab/business'),
+  onboarding('onboarding', '/onboarding'),
+  login('login', '/$_authPath/login'),
+  register('register', '/$_authPath/register'),
+  homeDetails('details', 'details'),
+  noInternet('${_error}_internet', '/$_error/internet');
 
-  static const String settingsTab = 'settings';
-  static const String settingsTabPath = '/tab_settings';
+  const AppRoutes(this.name, this.path);
 
-  static const String businessTab = 'business';
-  static const String businessTabPath = '/tab_business';
-
-  static const String onboarding = 'onboarding';
-  static const String onboardingPath = '/onboarding';
-
-  static const String login = 'login';
-  static const String loginPath = '/$_authPath/login';
-
-  static const String register = 'register';
-  static const String registerPath = '/$_authPath/register';
-
-  static const String noInternetView = '/no_internet_view';
-
-  static const String homeDetails = 'details';
-  static const String homeDetailsPath = 'details';
-
-  /// Auth path.
-  static const String _authPath = 'auth';
+  final String name;
+  final String path;
 }

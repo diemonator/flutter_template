@@ -10,11 +10,11 @@ Future<void> _setupSingletons(GetIt locator) async {
   );
 
   const secureLocalStorage = SecureLocalStorage(secureStorage);
-  final localStorage = LocalStorage(pref);
+  final appStorage = AppSettingsStorage(pref);
 
   final user = await secureLocalStorage.getUser();
 
-  final userSettingRepo = UserSettingsRepoImpl(localStorage);
+  final userSettingRepo = AppSettingsRepoImpl(appStorage);
   final userRepo = UserRepoImpl(secureLocalStorage, user);
 
   locator
@@ -22,7 +22,7 @@ Future<void> _setupSingletons(GetIt locator) async {
     ..registerSingleton<ThemeSettingsRepo>(userSettingRepo)
     ..registerSingleton<LocaleSettingsRepo>(userSettingRepo)
     ..registerSingleton<UserRepo>(userRepo)
-    ..registerSingleton(localStorage)
+    ..registerSingleton(appStorage)
     ..registerSingleton(AppLocalization(locator()))
     ..registerSingleton(
       AppTheme(locator()),

@@ -1,4 +1,4 @@
-name: flavours
+name: flutter_template
 description: A new Flutter flavours.
 
 publish_to: none
@@ -19,6 +19,9 @@ dependencies:
   intl: any
   get_it: any
   provider: any
+  flutter_bloc: any
+  rxdart: any
+  equatable: any
   freezed_annotation: any
   json_annotation: any
   dio: any
@@ -27,11 +30,9 @@ dependencies:
   collection: any
   regexed_validator: any
   animations: any
-  go_router: ^9.0.0
-  result_dart:
-    git:
-      url: https://github.com/eKaramihov/result_dart.git
-      ref: feature/ConstConstructors
+  go_router: any
+  result_dart: any
+  gap: any
 
 dev_dependencies:
   flutter_test:
