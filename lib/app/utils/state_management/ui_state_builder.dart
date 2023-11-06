@@ -21,7 +21,7 @@ class UIStateBuilder extends StatelessWidget {
     return switch (uiState) {
       UIState.success => successState,
       UIState.error => errorState ?? const Text('Something went wrong'),
-      UIState.loading => const CircularProgressIndicator()
+      UIState.loading => loadingState ?? const CircularProgressIndicator()
     };
   }
 }
