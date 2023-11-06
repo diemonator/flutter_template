@@ -13,24 +13,20 @@ import '../../presentation/main/tabs/business_view.dart';
 import '../../presentation/main/tabs/home_view.dart';
 import '../../presentation/main/tabs/school_view.dart';
 import '../../presentation/main/tabs/settings_view.dart';
-import '../constants/app_routes.dart';
 import '../di/app_locator.dart';
 import '../utils/state_management/vm_builder.dart';
+import 'app_routes.dart';
 
-part '../utils/navigation/app_navigation_util.dart';
+part 'app_navigation_util.dart';
 
 const _rootNavigatorKey = GlobalObjectKey<NavigatorState>('root');
 
 final GoRouter goRouterDelegate = GoRouter(
   navigatorKey: _rootNavigatorKey,
-  initialLocation: AppRoutes.login.path,
-  debugLogDiagnostics: true,
+  initialLocation: _initInitialPath,
   refreshListenable: locator.inject<Auth>(),
-  redirect: (context, state) => _authenticationRedirect(
-    context,
-    state,
-    locator.inject<Auth>(),
-  ),
+  redirect: _authenticationRedirect,
+  debugLogDiagnostics: true,
   routes: [
     GoRoute(
       name: AppRoutes.login.name,
