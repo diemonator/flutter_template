@@ -70,6 +70,7 @@ dart_code_metrics:
         exclude:
           - test/**
           - lib/main.dart
+          - lib/app/utils/extensions.dart
           - lib/app/navigation/navigation_helpers.dart
     - prefer-moving-to-variable
     - prefer-trailing-comma
