@@ -38,4 +38,10 @@ class _VMBuilderState<T extends BaseVM> extends State<VMBuilder<T>> {
     builder: widget.builder,
     child: widget.child,
   );
+
+  @override
+  void dispose() {
+    _viewModel.dispose();
+    super.dispose();
+  }
 }
