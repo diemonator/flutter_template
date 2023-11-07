@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:result_dart/result_dart.dart';
 
 import '../../app/localization/generated/l10n.dart';
 import '../../app/utils/state_management/state_extensions.dart';
@@ -23,63 +24,53 @@ class MainView extends StatelessWidget {
           DropdownButton<Locale>(
             padding: const EdgeInsets.all(8.0),
             value: viewModel.currentLocale,
-            items: Lang.delegate.supportedLocales
-                .map(
-                  (locale) => DropdownMenuItem<Locale>(
-                    value: locale,
-                    child: Text(locale.languageCode),
-                  ),
-                )
-                .toList(growable: false),
-            onChanged: (value) async {
-              final locale = value;
-
+            items: List.unmodifiable(
+              Lang.delegate.supportedLocales.map((locale) {
+                return DropdownMenuItem<Locale>(
+                  value: locale,
+                  child: Text(locale.languageCode),
+                );
+              }),
+            ),
+            onChanged: (localeValue) {
+              final locale = localeValue;
               if (locale != null) {
-                final result = await viewModel.changeLocale(locale);
-
-                if (result.isError() && context.mounted) {
-                  final exception =
-                      result.exceptionOrNull()?.toString() ?? 'Empty error';
-
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(exception)),
-                  );
-                }
+                viewModel.changeLocale(locale).onFailure(
+                  (message) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(message)),
+                    );
+                  },
+                );
               }
             },
           ),
           IconButton(
-            onPressed: () async {
-              final result = await viewModel.toggleTheme;
-
-              if (result.isError() && context.mounted) {
-                final exception =
-                    result.exceptionOrNull()?.toString() ?? 'Empty error';
-
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(exception)),
-                );
-              }
-            },
+            onPressed: () => viewModel.toggleTheme.onFailure(
+              (message) => ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(message)),
+              ),
+            ),
             icon: Icon(viewModel.themeIcon),
           ),
           IconButton(
-            onPressed: () async {
-              final result = await viewModel.switchToSystemTheme;
-
-              if (result.isError() && context.mounted) {
-                final exception =
-                    result.exceptionOrNull()?.toString() ?? 'Empty error';
-
+            onPressed: () => viewModel.switchToSystemTheme.onFailure(
+              (message) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(exception)),
+                  SnackBar(content: Text(message)),
                 );
-              }
-            },
+              },
+            ),
             icon: const Icon(Icons.system_update_alt),
           ),
           IconButton(
-            onPressed: viewModel.logOut,
+            onPressed: () => viewModel.logOut().onFailure(
+              (message) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(message)),
+                );
+              },
+            ),
             icon: const Icon(Icons.logout),
           ),
         ],

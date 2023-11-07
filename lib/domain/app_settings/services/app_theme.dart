@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -15,29 +13,29 @@ final class AppTheme extends ChangeNotifier {
     _themeState = _initialiseTheme;
   }
 
+  final ThemeData theme = ThemeData(
+    fontFamily: Consts.fontFamily,
+    useMaterial3: true,
+    brightness: Brightness.light,
+    colorSchemeSeed: Colors.blue,
+  );
+
+  final ThemeData darkTheme = ThemeData(
+    fontFamily: Consts.fontFamily,
+    useMaterial3: true,
+    brightness: Brightness.dark,
+    colorSchemeSeed: Colors.blue,
+  );
+
   final ThemeSettingsRepo _themeSettingsRepo;
   late ThemeState _themeState;
-
-  ThemeData get theme => ThemeData(
-        fontFamily: Consts.fontFamily,
-        useMaterial3: true,
-        brightness: Brightness.light,
-        colorSchemeSeed: Colors.blue,
-      );
-
-  ThemeData get darkTheme => ThemeData(
-        fontFamily: Consts.fontFamily,
-        useMaterial3: true,
-        brightness: Brightness.dark,
-        colorSchemeSeed: Colors.blue,
-      );
 
   ThemeMode get themeMode => _themeState.toThemeMode();
 
   IconData get icon =>
       _themeState == ThemeState.light ? Icons.dark_mode : Icons.sunny;
 
-  AsyncResult<Unit, Exception> toggleTheme() {
+  AsyncResult<Unit, String> toggleTheme() {
     _themeState = _toggleTheme;
 
     final brightness =
@@ -47,34 +45,23 @@ final class AppTheme extends ChangeNotifier {
       SystemUiOverlayStyle(statusBarBrightness: brightness),
     );
 
-    return _themeSettingsRepo.saveTheme(themeState: _themeState).fold(
-      (success) {
-        notifyListeners();
-
-        return Success(success);
-      },
-      (error) {
-        log('error');
-
-        return Failure(error);
-      },
-    );
+    return _themeSettingsRepo.saveTheme(themeState: _themeState).onSuccess(
+          (_) => notifyListeners(),
+        );
   }
 
-  AsyncResult<Unit, Exception> switchToSystemTheme() async {
+  AsyncResult<Unit, String> switchToSystemTheme() async {
     final systemTheme = _currentSystemTheme;
 
-    return _themeSettingsRepo.saveTheme(themeState: ThemeState.system).fold(
-      (success) {
+    return _themeSettingsRepo
+        .saveTheme(themeState: ThemeState.system)
+        .onSuccess(
+      (_) {
         if (systemTheme != _themeState) {
           _themeState = systemTheme;
-
           notifyListeners();
         }
-
-        return Success(success);
       },
-      Failure.new,
     );
   }
 

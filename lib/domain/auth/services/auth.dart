@@ -1,21 +1,26 @@
 import 'package:flutter/widgets.dart';
+import 'package:result_dart/result_dart.dart';
+
+import '../repositories/user_repo.dart';
 
 class Auth extends ChangeNotifier {
-  bool _isLoggedIn = false;
+  Auth(this._userRepo);
 
-  bool get isLoggedIn => _isLoggedIn;
+  final UserRepo _userRepo;
 
-  void logIn() {
-    if (!_isLoggedIn) {
-      _isLoggedIn = true;
-      notifyListeners();
-    }
+  bool get isLoggedIn => _userRepo.user != null;
+
+  Future<void> Function() get initAuth => _userRepo.loadUser;
+
+  AsyncResult<Unit, String> logIn(String email, String password) {
+    return _userRepo.logIn(email, password).onSuccess(
+          (_) => notifyListeners(),
+        );
   }
 
-  void logOut() {
-    if (_isLoggedIn) {
-      _isLoggedIn = false;
-      notifyListeners();
-    }
+  AsyncResult<Unit, String> logOut() {
+    return _userRepo.logOut().onSuccess(
+          (_) => notifyListeners(),
+        );
   }
 }

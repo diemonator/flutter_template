@@ -17,7 +17,7 @@ final class AppLocalization extends ChangeNotifier {
 
   LocaleData get _initialiseLocale => _localeSettingsRepo.locale;
 
-  AsyncResult<Unit, Exception> changeLocale(LocaleData locale) async {
+  AsyncResult<Unit, String> changeLocale(LocaleData locale) async {
     _currentLocale = locale;
 
     final result = _localeSettingsRepo.saveLocale(
@@ -28,13 +28,8 @@ final class AppLocalization extends ChangeNotifier {
       ),
     );
 
-    return result.fold(
-      (success) {
-        notifyListeners();
-
-        return Success.unit();
-      },
-      Failure.new,
+    return result.onSuccess(
+      (success) => notifyListeners(),
     );
   }
 }

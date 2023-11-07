@@ -5,5 +5,5 @@ import '../models/theme_state.dart';
 abstract interface class ThemeSettingsRepo {
   ThemeState get themeState;
 
-  AsyncResult<Unit, Exception> saveTheme({required ThemeState themeState});
+  AsyncResult<Unit, String> saveTheme({required ThemeState themeState});
 }

@@ -5,6 +5,7 @@ import '../locale_data.dart';
 import '../theme_state.dart';
 
 part 'app_settings.freezed.dart';
+
 part 'app_settings.g.dart';
 
 @freezed

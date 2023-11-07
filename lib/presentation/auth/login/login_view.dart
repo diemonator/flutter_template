@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:result_dart/result_dart.dart';
 
 import '../../../app/localization/generated/l10n.dart';
 import '../../../app/utils/state_management/state_extensions.dart';
@@ -83,7 +84,15 @@ class LoginState extends State<LoginView> {
                               focusNode: btnFocusNode,
                               onPressed: () {
                                 form.validate();
-                                viewModel.logIn();
+                                viewModel.logIn().onFailure(
+                                  (failure) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text('Login failed $failure'),
+                                      ),
+                                    );
+                                  },
+                                );
                               },
                               child: Text(login),
                             );

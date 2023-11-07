@@ -8,9 +8,8 @@ import '../../../domain/app_settings/repositories/theme_settings_repo.dart';
 import '../data_source/local/app_settings_storage.dart';
 
 class AppSettingsRepoImpl implements ThemeSettingsRepo, LocaleSettingsRepo {
-  AppSettingsRepoImpl(
-    this._localStorage,
-  ) : _appSettings = _localStorage.appSettings;
+  AppSettingsRepoImpl(this._localStorage)
+      : _appSettings = _localStorage.appSettings;
 
   final AppSettingsStorage _localStorage;
   AppSettings _appSettings;
@@ -22,7 +21,7 @@ class AppSettingsRepoImpl implements ThemeSettingsRepo, LocaleSettingsRepo {
   ThemeState get themeState => _localStorage.themeState;
 
   @override
-  AsyncResult<Unit, Exception> saveLocale({required LocaleData localeData}) {
+  AsyncResult<Unit, String> saveLocale({required LocaleData localeData}) {
     _appSettings = _appSettings.copyWith(
       languageCode: localeData.languageCode,
       countryCode: localeData.countryCode,
@@ -33,7 +32,7 @@ class AppSettingsRepoImpl implements ThemeSettingsRepo, LocaleSettingsRepo {
   }
 
   @override
-  AsyncResult<Unit, Exception> saveTheme({required ThemeState themeState}) {
+  AsyncResult<Unit, String> saveTheme({required ThemeState themeState}) {
     _appSettings = _appSettings.copyWith(theme: themeState.name);
 
     return _localStorage.saveAppSettings(appSettings: _appSettings);

@@ -12,27 +12,39 @@ class SecureLocalStorage {
 
   final FlutterSecureStorage _secureStorage;
 
-  AsyncResult<Unit, Error> saveUser({required UserData userData}) async {
+  AsyncResult<Unit, String> saveUser({required UserData userData}) async {
     final json = jsonEncode(userData.toJson());
 
     try {
       await _secureStorage.write(key: Consts.user, value: json);
 
       return Success.unit();
-    } on PlatformException {
-      return Failure(Error());
-    }
+    } on PlatformException catch (_) {}
+
+    return const Failure("Couldn't save user data");
   }
 
-  Future<UserData> getUser() async {
-    final json = await _secureStorage.read(key: Consts.user);
+  Future<bool> deleteUser() async {
+    try {
+      await _secureStorage.delete(key: Consts.user);
 
-    if (json != null) {
-      final map = jsonDecode(json) as Map<String, dynamic>;
+      return true;
+    } on PlatformException catch (_) {}
 
-      return UserData.fromJson(map);
-    }
+    return false;
+  }
 
-    return UserData.guest();
+  Future<UserData?> getUser() async {
+    try {
+      final json = await _secureStorage.read(key: Consts.user);
+
+      if (json != null) {
+        final map = jsonDecode(json) as Map<String, dynamic>;
+
+        return UserData.fromJson(map);
+      }
+    } on PlatformException catch (_) {}
+
+    return null;
   }
 }

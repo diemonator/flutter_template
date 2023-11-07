@@ -1,4 +1,5 @@
 import 'package:regexed_validator/regexed_validator.dart';
+import 'package:result_dart/result_dart.dart';
 
 import '../../../app/utils/state_management/base_vm.dart';
 import '../../../domain/auth/services/auth.dart';
@@ -10,10 +11,12 @@ final class LoginVM extends BaseVM {
   String _password = '';
   final Auth _auth;
 
-  void logIn() {
+  AsyncResult<Unit, String> logIn() async {
     if (_email.isNotEmpty && _password.isNotEmpty) {
-      _auth.logIn();
+      return _auth.logIn(_email, _password);
     }
+
+    return Future.value(Success.unit());
   }
 
   String? emailValidator(String text) {

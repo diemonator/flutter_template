@@ -3,9 +3,17 @@ import 'package:result_dart/result_dart.dart';
 import '../models/user_data/user_data.dart';
 
 abstract interface class UserRepo {
-  Result<UserData, Error> get user;
+  UserData? get user;
 
-  AsyncResult<Unit, Error> saveUser({required UserData userData});
+  Future<void> loadUser();
 
-  AsyncResult<Unit, Error> changeUserType({required UserData userData});
+  AsyncResult<Unit, String> saveUser({required UserData userData});
+
+  AsyncResult<Unit, String> logIn(String email, String password);
+
+  AsyncResult<Unit, String> logOut();
+
+  AsyncResult<Unit, String> changeUserType({required UserData userData});
+
+  Future<bool> deleteUser();
 }

@@ -18,17 +18,16 @@ final class AppSettingsStorage {
 
   LocaleData get localeData => appSettings.localeDate;
 
-  AsyncResult<Unit, Exception> saveAppSettings({
+  AsyncResult<Unit, String> saveAppSettings({
     required AppSettings appSettings,
   }) async {
-    final json = jsonEncode(appSettings);
-
     try {
+      final json = jsonEncode(appSettings);
       await _sharedPreferences.setString(Consts.appSettings, json);
 
       return Success.unit();
     } on PlatformException {
-      return Failure(Exception());
+      return const Failure("Couldn't save settings");
     }
   }
 
