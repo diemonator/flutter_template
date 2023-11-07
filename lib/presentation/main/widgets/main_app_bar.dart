@@ -21,15 +21,14 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
           padding: const EdgeInsets.all(8.0),
           value: viewModel.currentLocale,
           items: List.unmodifiable(
-            Lang.delegate.supportedLocales.map((locale) {
-              return DropdownMenuItem<Locale>(
+            Lang.delegate.supportedLocales.map(
+              (locale) => DropdownMenuItem<Locale>(
                 value: locale,
                 child: Text(locale.languageCode),
-              );
-            }),
+              ),
+            ),
           ),
-          onChanged: (localeValue) {
-            final locale = localeValue;
+          onChanged: (final locale) {
             if (locale != null) {
               viewModel.changeLocale(locale).onFailure(
                     (message) => context.showSimpleSnackBar(message),
@@ -38,15 +37,15 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
           },
         ),
         IconButton(
-          onPressed: () => viewModel.toggleTheme.onFailure(
-            (message) => context.showSimpleSnackBar(message),
-          ),
+          onPressed: () => viewModel.toggleTheme().onFailure(
+                (message) => context.showSimpleSnackBar(message),
+              ),
           icon: Icon(viewModel.themeIcon),
         ),
         IconButton(
-          onPressed: () => viewModel.switchToSystemTheme.onFailure(
-            (message) => context.showSimpleSnackBar(message),
-          ),
+          onPressed: () => viewModel.switchToSystemTheme().onFailure(
+                (message) => context.showSimpleSnackBar(message),
+              ),
           icon: const Icon(Icons.system_update_alt),
         ),
         IconButton(

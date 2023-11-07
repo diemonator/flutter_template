@@ -14,10 +14,13 @@ final class MainVM extends BaseVM {
   final Auth _auth;
   final AppLocalization _appLocalization;
 
-  AsyncResult<Unit, String> get toggleTheme => _appTheme.toggleTheme();
+  AsyncResult<Unit, String> Function() get switchToSystemTheme {
+    return _appTheme.switchToSystemTheme;
+  }
 
-  AsyncResult<Unit, String> get switchToSystemTheme =>
-      _appTheme.switchToSystemTheme();
+  AsyncResult<Unit, String> Function() get toggleTheme => _appTheme.toggleTheme;
+
+  AsyncResult<Unit, String> Function() get logOut => _auth.logOut;
 
   IconData get themeIcon => _appTheme.icon;
 
@@ -25,6 +28,4 @@ final class MainVM extends BaseVM {
 
   AsyncResult<Unit, String> changeLocale(Locale locale) =>
       _appLocalization.changeLocale(locale.localeData);
-
-  AsyncResult<Unit, String> Function() get logOut => _auth.logOut;
 }
