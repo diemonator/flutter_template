@@ -1,21 +1,27 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:result_dart/result_dart.dart';
 
+import '../../../app/localization/generated/l10n.dart';
 import '../models/locale_data.dart';
 import '../repositories/locale_settings_repo.dart';
 
 final class AppLocalization extends ChangeNotifier {
-  AppLocalization(this._localeSettingsRepo) {
-    _currentLocale = _initialiseLocale;
-  }
+  AppLocalization(this._localeSettingsRepo)
+      : _currentLocale = _localeSettingsRepo.locale;
+
+  final List<LocalizationsDelegate<Object>> localizationsDelegates = const [
+    Lang.delegate,
+    GlobalMaterialLocalizations.delegate,
+    GlobalWidgetsLocalizations.delegate,
+    GlobalCupertinoLocalizations.delegate,
+  ];
 
   final LocaleSettingsRepo _localeSettingsRepo;
 
-  late LocaleData _currentLocale;
+  LocaleData _currentLocale;
 
   LocaleData get currentLocalization => _currentLocale;
-
-  LocaleData get _initialiseLocale => _localeSettingsRepo.locale;
 
   AsyncResult<Unit, String> changeLocale(LocaleData locale) async {
     _currentLocale = locale;
@@ -28,8 +34,6 @@ final class AppLocalization extends ChangeNotifier {
       ),
     );
 
-    return result.onSuccess(
-      (success) => notifyListeners(),
-    );
+    return result.onSuccess((_) => notifyListeners());
   }
 }

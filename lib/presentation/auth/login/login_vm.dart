@@ -16,7 +16,7 @@ final class LoginVM extends BaseVM {
       return _auth.logIn(_email, _password);
     }
 
-    return Future.value(Success.unit());
+    return Success.unit();
   }
 
   String? emailValidator(String text) {

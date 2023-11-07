@@ -1,11 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 
+import '../domain/app_settings/mappers/locale_mappers.dart';
 import '../domain/app_settings/services/app_localization.dart';
 import '../domain/app_settings/services/app_theme.dart';
-import '../presentation/mappers/locale_mappers.dart';
-import 'localization/generated/l10n.dart';
 import 'utils/state_management/base_vm.dart';
 
 final class AppVM extends BaseVM {
@@ -18,12 +16,9 @@ final class AppVM extends BaseVM {
   final AppTheme _appTheme;
   final AppLocalization _appLocalization;
 
-  List<LocalizationsDelegate<Object>> get localizationsDelegates => const [
-        Lang.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ];
+  List<LocalizationsDelegate<Object>> get localizationsDelegates {
+    return _appLocalization.localizationsDelegates;
+  }
 
   ThemeData get theme => _appTheme.theme;
 

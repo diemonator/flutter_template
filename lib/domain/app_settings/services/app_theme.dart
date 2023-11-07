@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:result_dart/result_dart.dart';
 
 import '../../../app/constants/consts.dart';
-import '../../../presentation/mappers/theme_mappers.dart';
+import '../mappers/theme_mappers.dart';
 import '../models/theme_state.dart';
 import '../repositories/theme_settings_repo.dart';
 

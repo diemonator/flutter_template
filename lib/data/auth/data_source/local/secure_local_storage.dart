@@ -13,9 +13,8 @@ class SecureLocalStorage {
   final FlutterSecureStorage _secureStorage;
 
   AsyncResult<Unit, String> saveUser({required UserData userData}) async {
-    final json = jsonEncode(userData.toJson());
-
     try {
+      final json = jsonEncode(userData.toJson());
       await _secureStorage.write(key: Consts.user, value: json);
 
       return Success.unit();

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../domain/app_settings/models/locale_data.dart';
+import '../models/locale_data.dart';
 
 extension LocaleMappers on Locale {
   LocaleData get localeData => LocaleData(
