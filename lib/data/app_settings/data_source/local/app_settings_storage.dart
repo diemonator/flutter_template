@@ -1,45 +1,45 @@
 import 'dart:convert';
 
-import 'package:flutter/services.dart';
-import 'package:result_dart/result_dart.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../../../app/constants/consts.dart';
+import '../../../../app/utils/local_storages/local_storage.dart';
 import '../../../../domain/app_settings/models/app_settings/app_settings.dart';
 import '../../../../domain/app_settings/models/locale_data.dart';
 import '../../../../domain/app_settings/models/theme_state.dart';
+import '../../../../domain/exceptions/general_exceptions/json_mapping_exception.dart';
 
 final class AppSettingsStorage {
-  const AppSettingsStorage(this._sharedPreferences);
+  const AppSettingsStorage(this._localStorage);
 
-  final SharedPreferences _sharedPreferences;
+  final LocalStorage _localStorage;
 
   ThemeState get themeState => appSettings.themeState;
 
   LocaleData get localeData => appSettings.localeDate;
 
-  AsyncResult<Unit, String> saveAppSettings({
-    required AppSettings appSettings,
-  }) async {
-    try {
-      final json = jsonEncode(appSettings);
-      await _sharedPreferences.setString(Consts.appSettings, json);
-
-      return Success.unit();
-    } on PlatformException {
-      return const Failure("Couldn't save settings");
-    }
-  }
-
   AppSettings get appSettings {
-    final userData = _sharedPreferences.getString(Consts.appSettings);
+    try {
+      final jsonText = _localStorage.getString(Consts.appSettings) ?? '';
 
-    if (userData != null) {
-      final map = jsonDecode(userData) as Map<String, dynamic>;
+      if (jsonText.isNotEmpty) {
+        final json = jsonDecode(jsonText) as Map<String, dynamic>;
 
-      return AppSettings.fromJson(map);
+        return AppSettings.fromJson(json);
+      }
+    } on FormatException {
+      _localStorage.deleteString(Consts.appSettings);
     }
 
     return AppSettings.empty();
+  }
+
+  Future<bool> saveAppSettings({required AppSettings appSettings}) {
+    try {
+      final json = appSettings.toJson();
+      final jsonText = jsonEncode(json);
+
+      return _localStorage.setString(Consts.appSettings, jsonText);
+    } on FormatException catch (e, stackTrace) {
+      Error.throwWithStackTrace(const JsonMappingException(), stackTrace);
+    }
   }
 }

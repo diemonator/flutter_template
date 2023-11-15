@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../../app/localization/generated/l10n.dart';
+import '../main_view.dart';
 
-extension TabItems on Scaffold {
+extension TabItems on MainView {
   static List<BottomNavigationBarItem> of(BuildContext context) {
     final lang = Lang.of(context);
 

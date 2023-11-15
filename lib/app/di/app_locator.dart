@@ -1,15 +1,15 @@
 import 'package:dio/dio.dart';
+import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../data/app_settings/data_source/local/app_settings_storage.dart';
 import '../../data/app_settings/repository/app_settings_repo_impl.dart';
-import '../../data/auth/data_source/local/secure_local_storage.dart';
+import '../../data/auth/data_source/local/auth_local_storage.dart';
 import '../../data/auth/data_source/remote/auth_api.dart';
+import '../../data/auth/data_source/remote/auth_interceptor.dart';
 import '../../data/auth/repository/user_repo_impl.dart';
-import '../../domain/app_settings/repositories/locale_settings_repo.dart';
-import '../../domain/app_settings/repositories/theme_settings_repo.dart';
 import '../../domain/app_settings/services/app_localization.dart';
 import '../../domain/app_settings/services/app_theme.dart';
 import '../../domain/auth/repositories/user_repo.dart';
@@ -19,7 +19,9 @@ import '../../presentation/auth/register/register_vm.dart';
 import '../../presentation/main/main_vm.dart';
 import '../app_vm.dart';
 import '../utils/di/app_locator_wrapper.dart';
-import '../utils/network/request_wrapper.dart';
+import '../utils/local_storages/local_storage.dart';
+import '../utils/local_storages/secure_local_storage.dart';
+import '../utils/network/api.dart';
 
 part 'registers/app_factories.dart';
 part 'registers/app_singletons.dart';

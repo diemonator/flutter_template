@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:result_dart/result_dart.dart';
 
 import '../../../app/localization/generated/l10n.dart';
+import '../../exceptions/app_settings_exception.dart';
 import '../models/locale_data.dart';
 import '../repositories/locale_settings_repo.dart';
 
@@ -23,17 +24,18 @@ final class AppLocalization extends ChangeNotifier {
 
   LocaleData get currentLocalization => _currentLocale;
 
-  AsyncResult<Unit, String> changeLocale(LocaleData locale) async {
-    _currentLocale = locale;
-
-    final result = _localeSettingsRepo.saveLocale(
+  AsyncResult<Unit, LocalizationSaveFailure> changeLocale(LocaleData locale) {
+    return _localeSettingsRepo
+        .saveLocale(
       localeData: LocaleData(
         languageCode: locale.languageCode,
         scriptCode: locale.scriptCode,
         countryCode: locale.countryCode,
       ),
-    );
-
-    return result.onSuccess((_) => notifyListeners());
+    )
+        .onSuccess((_) {
+      _currentLocale = locale;
+      notifyListeners();
+    });
   }
 }

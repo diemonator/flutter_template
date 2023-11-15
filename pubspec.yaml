@@ -25,6 +25,7 @@ dependencies:
   freezed_annotation: any
   json_annotation: any
   dio: any
+  dio_smart_retry: any
   shared_preferences: any
   flutter_secure_storage: any
   collection: any

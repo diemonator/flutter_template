@@ -6,6 +6,8 @@ import '../../domain/app_settings/mappers/locale_mappers.dart';
 import '../../domain/app_settings/services/app_localization.dart';
 import '../../domain/app_settings/services/app_theme.dart';
 import '../../domain/auth/services/auth.dart';
+import '../../domain/exceptions/app_settings_exception.dart';
+import '../../domain/exceptions/user_exception.dart';
 
 final class MainVM extends BaseVM {
   MainVM(this._appTheme, this._appLocalization, this._auth);
@@ -14,18 +16,21 @@ final class MainVM extends BaseVM {
   final Auth _auth;
   final AppLocalization _appLocalization;
 
-  AsyncResult<Unit, String> Function() get switchToSystemTheme {
-    return _appTheme.switchToSystemTheme;
-  }
-
-  AsyncResult<Unit, String> Function() get toggleTheme => _appTheme.toggleTheme;
-
-  AsyncResult<Unit, String> Function() get logOut => _auth.logOut;
-
   IconData get themeIcon => _appTheme.icon;
 
   Locale get currentLocale => _appLocalization.currentLocalization.locale;
 
-  AsyncResult<Unit, String> changeLocale(Locale locale) =>
-      _appLocalization.changeLocale(locale.localeData);
+  AsyncResult<Unit, UserLogoutFailed> Function() get logOut => _auth.logOut;
+
+  AsyncResult<Unit, ThemeSaveFailure> Function() get switchToSystemTheme {
+    return _appTheme.switchToSystemTheme;
+  }
+
+  AsyncResult<Unit, ThemeSaveFailure> Function() get toggleTheme {
+    return _appTheme.toggleTheme;
+  }
+
+  AsyncResult<Unit, LocalizationSaveFailure> changeLocale(Locale locale) {
+    return _appLocalization.changeLocale(locale.localeData);
+  }
 }

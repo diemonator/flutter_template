@@ -3,7 +3,9 @@ import 'package:gap/gap.dart';
 import 'package:result_dart/result_dart.dart';
 
 import '../../../app/localization/generated/l10n.dart';
+import '../../../app/utils/extensions.dart';
 import '../../../app/utils/state_management/state_extensions.dart';
+import '../../../domain/exceptions/exception_handler.dart';
 import 'login_vm.dart';
 
 class LoginView extends StatefulWidget {
@@ -31,7 +33,7 @@ class LoginState extends State<LoginView> {
   Widget build(BuildContext context) {
     final viewModel = context.read<LoginVM>();
     final lang = Lang.of(context);
-    final login = lang.logIn;
+    final login = lang.login;
 
     return Scaffold(
       appBar: AppBar(title: Text(login)),
@@ -43,26 +45,31 @@ class LoginState extends State<LoginView> {
               child: Builder(
                 builder: (context) {
                   final form = Form.of(context);
+                  final focusScope = FocusScope.of(context);
 
                   return Column(
                     children: [
                       TextFormField(
                         focusNode: emailFocusNode,
-                        validator: (value) => viewModel.emailValidator(
-                          value ?? '',
+                        validator: (emailValue) => _validator(
+                          emailValue,
+                          viewModel.emailValidator,
+                          lang.invalidEmail,
                         ),
                         textInputAction: TextInputAction.next,
                         decoration: InputDecoration(hintText: lang.enterEmail),
                         onFieldSubmitted: (_) {
                           form.validate();
-                          FocusScope.of(context).requestFocus(passFocusNode);
+                          focusScope.requestFocus(passFocusNode);
                         },
                       ),
                       const Gap(60),
                       TextFormField(
                         focusNode: passFocusNode,
-                        validator: (value) => viewModel.passwordValidator(
-                          value ?? '',
+                        validator: (passValue) => _validator(
+                          passValue,
+                          viewModel.passwordValidator,
+                          lang.invalidPass,
                         ),
                         obscureText: true,
                         decoration: InputDecoration(
@@ -70,32 +77,23 @@ class LoginState extends State<LoginView> {
                         ),
                         onFieldSubmitted: (_) {
                           form.validate();
-                          FocusScope.of(context).requestFocus(btnFocusNode);
+                          focusScope.requestFocus(btnFocusNode);
                         },
                       ),
                       const Gap(60),
                       Padding(
                         padding: const EdgeInsets.all(16.0),
-                        child: Builder(
-                          builder: (context) {
-                            final viewModel = context.watch<LoginVM>();
-
-                            return ElevatedButton(
-                              focusNode: btnFocusNode,
-                              onPressed: () {
-                                form.validate();
-                                viewModel.logIn().onFailure(
-                                  (failure) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text('Login failed $failure'),
-                                      ),
-                                    );
-                                  },
-                                );
-                              },
-                              child: Text(login),
-                            );
+                        child: ElevatedButton(
+                          focusNode: btnFocusNode,
+                          child: Text(login),
+                          onPressed: () {
+                            if (form.validate()) {
+                              viewModel.logIn().onFailure(
+                                    (message) => context.showSimpleSnackBar(
+                                      message.localizedMessage(lang),
+                                    ),
+                                  );
+                            }
                           },
                         ),
                       ),
@@ -117,5 +115,19 @@ class LoginState extends State<LoginView> {
     btnFocusNode.dispose();
 
     super.dispose();
+  }
+
+  String? _validator(
+    String? value,
+    bool Function(String) validator,
+    String errorMessage,
+  ) {
+    final isValid = validator(value ?? '');
+
+    if (isValid) {
+      return null;
+    }
+
+    return errorMessage;
   }
 }

@@ -1,19 +1,20 @@
 import 'package:result_dart/result_dart.dart';
 
+import '../../exceptions/user_exception.dart';
 import '../models/user_data/user_data.dart';
 
 abstract interface class UserRepo {
-  UserData? get user;
+  UserData get user;
 
   Future<void> loadUser();
 
-  AsyncResult<Unit, String> saveUser({required UserData userData});
+  AsyncResult<Unit, UserSaveFailed> saveUser({required UserData userData});
 
-  AsyncResult<Unit, String> logIn(String email, String password);
+  AsyncResult<Unit, UserLoginFailed> logIn(String email, String password);
 
-  AsyncResult<Unit, String> logOut();
+  AsyncResult<Unit, UserLogoutFailed> logOut();
 
-  AsyncResult<Unit, String> changeUserType({required UserData userData});
+  AsyncResult<Unit, UserDeletionFailed> deleteUser();
 
-  Future<bool> deleteUser();
+  AsyncResult<Unit, UserRefreshTokenFailed> refreshToken();
 }

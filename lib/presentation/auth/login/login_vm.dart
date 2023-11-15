@@ -3,6 +3,7 @@ import 'package:result_dart/result_dart.dart';
 
 import '../../../app/utils/state_management/base_vm.dart';
 import '../../../domain/auth/services/auth.dart';
+import '../../../domain/exceptions/user_exception.dart';
 
 final class LoginVM extends BaseVM {
   LoginVM(this._auth);
@@ -11,33 +12,29 @@ final class LoginVM extends BaseVM {
   String _password = '';
   final Auth _auth;
 
-  AsyncResult<Unit, String> logIn() async {
+  AsyncResult<Unit, UserLoginFailed> logIn() async {
     if (_email.isNotEmpty && _password.isNotEmpty) {
       return _auth.logIn(_email, _password);
     }
 
-    return Success.unit();
+    return const Failure(UserLoginFailed());
   }
 
-  String? emailValidator(String text) {
-    final result = validator.email(text);
-
-    if (!result) {
-      return 'Email is not valid';
+  bool emailValidator(String text) {
+    final isValidEmail = validator.email(text);
+    if (isValidEmail) {
+      _email = text;
     }
-    _email = text;
 
-    return null;
+    return isValidEmail;
   }
 
-  String? passwordValidator(String text) {
-    final result = validator.mediumPassword(text);
-
-    if (!result) {
-      return 'Password is too week';
+  bool passwordValidator(String text) {
+    final isPassValid = validator.mediumPassword(text);
+    if (isPassValid) {
+      _password = text;
     }
-    _password = text;
 
-    return null;
+    return isPassValid;
   }
 }

@@ -3,48 +3,73 @@ import 'package:result_dart/result_dart.dart';
 import '../../../domain/auth/models/user_data/user_data.dart';
 import '../../../domain/auth/models/user_type.dart';
 import '../../../domain/auth/repositories/user_repo.dart';
-import '../data_source/local/secure_local_storage.dart';
+import '../../../domain/exceptions/exception_handler.dart';
+import '../../../domain/exceptions/user_exception.dart';
+import '../data_source/local/auth_local_storage.dart';
 import '../data_source/remote/auth_api.dart';
 
 class UserRepoImpl implements UserRepo {
   UserRepoImpl(this._secureLocalStorage, this._authApi);
 
-  final SecureLocalStorage _secureLocalStorage;
+  final AuthLocalStorage _secureLocalStorage;
   final AuthApi _authApi;
-  UserData? _userData;
+  UserData _userData = UserData.empty();
 
   @override
-  UserData? get user => _userData;
+  UserData get user => _userData;
 
   @override
-  AsyncResult<Unit, String> saveUser({required UserData userData}) {
-    _userData = userData;
+  AsyncResult<Unit, UserSaveFailed> saveUser({
+    required UserData userData,
+  }) async {
+    try {
+      _userData = userData;
+      await _secureLocalStorage.saveUser(userData: userData);
 
-    return _secureLocalStorage.saveUser(userData: userData);
+      return Success.unit();
+    } on Exception catch (e, stackTrace) {
+      e.logException(stackTrace);
+    }
+
+    return const Failure(UserSaveFailed());
   }
 
   @override
-  AsyncResult<Unit, String> changeUserType({required UserData userData}) {
-    return saveUser(userData: userData);
+  AsyncResult<Unit, UserDeletionFailed> deleteUser() async {
+    try {
+      await _secureLocalStorage.deleteUser();
+
+      return Success.unit();
+    } on Exception catch (e, stackTrace) {
+      e.logException(stackTrace);
+    }
+
+    return const Failure(UserDeletionFailed());
   }
 
   @override
-  Future<bool> deleteUser() => _secureLocalStorage.deleteUser();
+  AsyncResult<Unit, UserLoginFailed> logIn(
+    String email,
+    String password,
+  ) async {
+    try {
+      final token = await _authApi.logIn();
+      final userData = UserData(
+        email: email,
+        pass: password,
+        token: token,
+        userType: UserType.user.name,
+      );
+      _userData = userData;
 
-  @override
-  AsyncResult<Unit, String> logIn(String email, String password) async {
-    final token = await _authApi.logIn();
+      await _secureLocalStorage.saveUser(userData: userData);
 
-    final userData = UserData(
-      email: email,
-      pass: password,
-      token: token,
-      userType: UserType.user.name,
-    );
+      return Success.unit();
+    } on Exception catch (e, stackTrace) {
+      e.logException(stackTrace);
 
-    _userData = userData;
-
-    return saveUser(userData: userData);
+      return const Failure(UserLoginFailed());
+    }
   }
 
   @override
@@ -53,15 +78,36 @@ class UserRepoImpl implements UserRepo {
   }
 
   @override
-  AsyncResult<Unit, String> logOut() async {
-    _userData = null;
-    final deletedUser = await _secureLocalStorage.deleteUser();
-    final logOutUser = await _authApi.logOut();
+  AsyncResult<Unit, UserLogoutFailed> logOut() async {
+    try {
+      _userData = UserData.empty();
+      final logOutUser = await _authApi.logOut();
+      await _secureLocalStorage.deleteUser();
 
-    if (deletedUser && logOutUser) {
-      return Success.unit();
+      if (logOutUser) {
+        return Success.unit();
+      }
+    } on Exception catch (e, stackTrace) {
+      e.logException(stackTrace);
     }
 
-    return const Failure('Log out procedure failed');
+    return const Failure(UserLogoutFailed());
+  }
+
+  @override
+  AsyncResult<Unit, UserRefreshTokenFailed> refreshToken() async {
+    try {
+      final token = await _authApi.logIn();
+      final userData = _userData.copyWith(token: token);
+      _userData = userData;
+
+      await _secureLocalStorage.saveUser(userData: userData);
+
+      return Success.unit();
+    } on Exception catch (e, stackTrace) {
+      e.logException(stackTrace);
+    }
+
+    return const Failure(UserRefreshTokenFailed());
   }
 }

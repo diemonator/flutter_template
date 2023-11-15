@@ -1,25 +1,42 @@
 part of '../app_locator.dart';
 
 Future<void> _setupSingletons(GetIt locator) async {
-  final localStorage = await SharedPreferences.getInstance();
+  /// setup auth
+  final userRepo = _setupUserRepo(locator);
 
-  const secureStorage = FlutterSecureStorage(
-    aOptions: AndroidOptions(encryptedSharedPreferences: true),
-  );
-
-  const secureLocalStorage = SecureLocalStorage(secureStorage);
-  final appStorage = AppSettingsStorage(localStorage);
-  final authApi = AuthApi(RequestWrapper(Dio()));
-
-  final appSettingRepo = AppSettingsRepoImpl(appStorage);
-  final userRepo = UserRepoImpl(secureLocalStorage, authApi);
+  /// Setup app settings
+  final appSettingsRepo = await _setupAppSettingsStorage();
 
   locator
     ..registerLazySingleton<UserRepo>(() => userRepo)
     ..registerLazySingleton(() => Auth(userRepo))
-    ..registerLazySingleton<ThemeSettingsRepo>(() => appSettingRepo)
-    ..registerLazySingleton<LocaleSettingsRepo>(() => appSettingRepo)
-    ..registerLazySingleton(() => appStorage)
-    ..registerLazySingleton(() => AppLocalization(locator()))
-    ..registerLazySingleton(() => AppTheme(locator()));
+    ..registerLazySingleton(() => AppLocalization(appSettingsRepo))
+    ..registerLazySingleton(() => AppTheme(appSettingsRepo));
+}
+
+Future<AppSettingsRepoImpl> _setupAppSettingsStorage() async {
+  final sharedPref = await SharedPreferences.getInstance();
+  final appStorage = AppSettingsStorage(LocalStorage(sharedPref));
+
+  return AppSettingsRepoImpl(appStorage);
+}
+
+UserRepo _setupUserRepo(GetIt locator) {
+  const secureStorage = FlutterSecureStorage(
+    aOptions: AndroidOptions(encryptedSharedPreferences: true),
+  );
+  const authStorage = AuthLocalStorage(SecureLocalStorage(secureStorage));
+
+  final authDio = Dio();
+  authDio.interceptors.addAll([
+    AuthInterceptor(
+      () => locator<Auth>().authHeader,
+      () => locator<Auth>().refreshToken(),
+    ),
+    RetryInterceptor(dio: authDio),
+  ]);
+
+  final authApi = AuthApi(Api(authDio));
+
+  return UserRepoImpl(authStorage, authApi);
 }

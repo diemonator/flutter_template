@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:result_dart/result_dart.dart';
 
 import '../../../app/constants/consts.dart';
+import '../../exceptions/app_settings_exception.dart';
 import '../mappers/theme_mappers.dart';
 import '../models/theme_state.dart';
 import '../repositories/theme_settings_repo.dart';
@@ -35,7 +36,7 @@ final class AppTheme extends ChangeNotifier {
   IconData get icon =>
       _themeState == ThemeState.light ? Icons.dark_mode : Icons.sunny;
 
-  AsyncResult<Unit, String> toggleTheme() {
+  AsyncResult<Unit, ThemeSaveFailure> toggleTheme() {
     _themeState = _toggleTheme;
 
     final brightness =
@@ -50,7 +51,7 @@ final class AppTheme extends ChangeNotifier {
         );
   }
 
-  AsyncResult<Unit, String> switchToSystemTheme() async {
+  AsyncResult<Unit, ThemeSaveFailure> switchToSystemTheme() async {
     final systemTheme = _currentSystemTheme;
 
     return _themeSettingsRepo

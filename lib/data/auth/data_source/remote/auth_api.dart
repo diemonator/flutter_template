@@ -1,9 +1,9 @@
-import '../../../../app/utils/network/request_wrapper.dart';
+import '../../../../app/utils/network/api.dart';
 
 class AuthApi {
   const AuthApi(this._authApi);
 
-  final RequestWrapper _authApi;
+  final Api _authApi;
 
   Future<String> logIn() async {
     return 'token';
@@ -11,5 +11,9 @@ class AuthApi {
 
   Future<bool> logOut() async {
     return true;
+  }
+
+  Future<String> refreshToken() async {
+    return 'new_token';
   }
 }
