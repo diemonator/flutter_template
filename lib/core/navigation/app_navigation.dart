@@ -32,22 +32,22 @@ final GoRouter goRouterDelegate = GoRouter(
       name: AppRoutes.login.name,
       path: AppRoutes.login.path,
       builder: (context, state) => VMBuilder<LoginVM>(
+        builder: (context, child) => LoginView(key: state.pageKey),
         viewModelBuilder: locator.inject,
-        child: LoginView(key: state.pageKey),
       ),
     ),
     GoRoute(
       name: AppRoutes.register.name,
       path: AppRoutes.register.path,
       builder: (context, state) => VMBuilder<RegisterVM>(
+        builder: (context, child) => RegisterView(key: state.pageKey),
         viewModelBuilder: locator.inject,
-        child: RegisterView(key: state.pageKey),
       ),
     ),
     StatefulShellRoute.indexedStack(
-      builder: (context, state, navigationShell) => VMBuilder<MainVM>(
+      builder: (context, state, navShell) => VMBuilder<MainVM>(
+        builder: (context, child) => MainView(navShell, key: state.pageKey),
         viewModelBuilder: locator.inject,
-        child: MainView(navigationShell, key: state.pageKey),
       ),
       branches: [
         StatefulShellBranch(

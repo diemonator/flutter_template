@@ -39,6 +39,6 @@
   "userInitError": "Грешка при инициализация на потребил",
   "userDeletionError": "Грешка при изтриване на потребитл",
   "userSavingError": "Грешка при записване на потребител",
-  "themeSaveError": "Failed to save theme",
-  "localizationSaveError": "Failed to save localization"
+  "themeSaveError": "Грешка при запазване на темата",
+  "localizationSaveError": "Грешка при запазване на локализацията"
 }
