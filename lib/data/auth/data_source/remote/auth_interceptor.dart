@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:result_dart/result_dart.dart';
 
-import '../../../../app/utils/network/api_exception.dart';
-import '../../../../app/utils/network/api_response.dart';
+import '../../../../core/utils/network/api_exception.dart';
+import '../../../../core/utils/network/api_response.dart';
 
 class AuthInterceptor extends Interceptor {
   AuthInterceptor(this._authHeaders, this._refreshToken);

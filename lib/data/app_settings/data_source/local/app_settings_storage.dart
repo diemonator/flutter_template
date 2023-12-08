@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import '../../../../app/constants/consts.dart';
-import '../../../../app/utils/local_storages/local_storage.dart';
+import '../../../../core/constants/consts.dart';
+import '../../../../core/utils/local_storages/local_storage.dart';
 import '../../../../domain/app_settings/models/app_settings/app_settings.dart';
 import '../../../../domain/app_settings/models/locale_data.dart';
 import '../../../../domain/app_settings/models/theme_state.dart';

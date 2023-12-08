@@ -1,7 +1,7 @@
 import 'dart:developer';
 
-import '../../app/localization/generated/l10n.dart';
-import '../../app/utils/network/api_exception.dart';
+import '../../core/localization/generated/l10n.dart';
+import '../../core/utils/network/api_exception.dart';
 import 'app_settings_exception.dart';
 import 'user_exception.dart';
 

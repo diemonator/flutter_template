@@ -65,6 +65,6 @@ flutter_intl:
   enabled: true
   class_name: Lang
   main_locale: en
-  arb_dir: lib/app/localization
-  output_dir: lib/app/localization/generated
+  arb_dir: lib/core/localization
+  output_dir: lib/core/localization/generated
   use_deferred_loading: false

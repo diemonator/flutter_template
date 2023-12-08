@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../app/localization/generated/l10n.dart';
+import '../../../core/localization/generated/l10n.dart';
 
 class BusinessView extends StatelessWidget {
   const BusinessView({super.key});

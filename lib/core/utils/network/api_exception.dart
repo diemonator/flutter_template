@@ -16,9 +16,9 @@ sealed class ApiException implements Exception {
       DioExceptionType.cancel => ApiCancelRequest(message),
       DioExceptionType.connectionError => ApiBadConnection(message),
       DioExceptionType.badResponse => ApiBadResponse(
-          e.response?.statusCode ?? 0,
-          message,
-        ),
+        e.response?.statusCode ?? 0,
+        message,
+      ),
       DioExceptionType.unknown => ApiUnknownException(message),
     };
   }
@@ -58,30 +58,30 @@ final class ApiBadResponse extends ApiException {
   final int statusCode;
 }
 
-final class ApiServerUnavailable extends ApiBadResponse {
-  const ApiServerUnavailable(super.statusCode, [super.message]);
-}
-
-final class ApiServerError extends ApiBadResponse {
-  const ApiServerError(super.statusCode, [super.message]);
-}
-
-final class ApiMethodNotFound extends ApiBadResponse {
-  const ApiMethodNotFound(super.statusCode, [super.message]);
-}
-
-final class ApiMethodNotAllowed extends ApiBadResponse {
-  const ApiMethodNotAllowed(super.statusCode, [super.message]);
-}
-
 final class ApiBadRequest extends ApiBadResponse {
-  const ApiBadRequest(super.statusCode, [super.message]);
+  const ApiBadRequest() : super(400);
 }
 
 final class ApiUnauthorized extends ApiBadResponse {
-  const ApiUnauthorized(super.statusCode, [super.message]);
+  const ApiUnauthorized() : super(401);
 }
 
 final class ApiForbidden extends ApiBadResponse {
-  const ApiForbidden(super.statusCode, [super.message]);
+  const ApiForbidden() : super(403);
+}
+
+final class ApiMethodNotFound extends ApiBadResponse {
+  const ApiMethodNotFound() : super(404);
+}
+
+final class ApiMethodNotAllowed extends ApiBadResponse {
+  const ApiMethodNotAllowed() : super(405);
+}
+
+final class ApiServerError extends ApiBadResponse {
+  const ApiServerError() : super(500);
+}
+
+final class ApiServerUnavailable extends ApiBadResponse {
+  const ApiServerUnavailable() : super(503);
 }

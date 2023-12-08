@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import '../../../../app/constants/consts.dart';
-import '../../../../app/utils/local_storages/secure_local_storage.dart';
+import '../../../../core/constants/consts.dart';
+import '../../../../core/utils/local_storages/secure_local_storage.dart';
 import '../../../../domain/auth/models/user_data/user_data.dart';
 import '../../../../domain/exceptions/general_exceptions/json_mapping_exception.dart';
 

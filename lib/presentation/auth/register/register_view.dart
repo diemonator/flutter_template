@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-import '../../../app/localization/generated/l10n.dart';
-import '../../../app/utils/state_management/state_extensions.dart';
+import '../../../core/localization/generated/l10n.dart';
+import '../../../core/utils/state_management/state_extensions.dart';
 import 'register_vm.dart';
 
 class RegisterView extends StatelessWidget {

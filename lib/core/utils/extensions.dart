@@ -10,7 +10,9 @@ extension ThemeExtension on BuildContext {
   ThemeData get theme => Theme.of(this);
 
   TextTheme get textTheme => theme.textTheme;
+}
 
+extension SnackbarExtension on BuildContext {
   void showSimpleSnackBar(String message) {
     ScaffoldMessenger.of(this).showSnackBar(
       SnackBar(content: Text(message)),

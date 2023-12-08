@@ -17,7 +17,7 @@ import '../../domain/auth/services/auth.dart';
 import '../../presentation/auth/login/login_vm.dart';
 import '../../presentation/auth/register/register_vm.dart';
 import '../../presentation/main/main_vm.dart';
-import '../app_vm.dart';
+import '../app/app_vm.dart';
 import '../utils/di/app_locator_wrapper.dart';
 import '../utils/local_storages/local_storage.dart';
 import '../utils/local_storages/secure_local_storage.dart';

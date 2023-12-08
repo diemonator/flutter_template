@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../models/tab_items.dart';
+import '../../../core/navigation/app_routes.dart';
 
 class BottomNavbar extends StatelessWidget {
   const BottomNavbar(this._navigationShell, {super.key});
@@ -13,7 +13,7 @@ class BottomNavbar extends StatelessWidget {
     final screenWidth = MediaQuery.sizeOf(context).width;
 
     if (screenWidth <= 600) {
-      final tabItems = TabItems.of(context);
+      final tabItems = AppRoutes.navbarItems;
       final colorScheme = Theme.of(context).colorScheme;
 
       return BottomNavigationBar(

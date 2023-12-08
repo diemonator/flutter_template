@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../domain/app_settings/mappers/locale_mappers.dart';
-import '../domain/app_settings/services/app_localization.dart';
-import '../domain/app_settings/services/app_theme.dart';
-import 'utils/state_management/base_vm.dart';
+import '../../domain/app_settings/mappers/locale_mappers.dart';
+import '../../domain/app_settings/services/app_localization.dart';
+import '../../domain/app_settings/services/app_theme.dart';
+import '../utils/state_management/base_vm.dart';
 
 final class AppVM extends BaseVM {
   AppVM({

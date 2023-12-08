@@ -1,4 +1,4 @@
-import '../../../../app/utils/network/api.dart';
+import '../../../../core/utils/network/api.dart';
 
 class AuthApi {
   const AuthApi(this._authApi);

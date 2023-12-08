@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:result_dart/result_dart.dart';
 
-import '../../../app/localization/generated/l10n.dart';
-import '../../../app/utils/extensions.dart';
-import '../../../app/utils/state_management/state_extensions.dart';
+import '../../../core/localization/generated/l10n.dart';
+import '../../../core/utils/extensions.dart';
+import '../../../core/utils/state_management/state_extensions.dart';
 import '../../../domain/exceptions/exception_handler.dart';
 import '../main_vm.dart';
 

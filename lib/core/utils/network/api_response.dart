@@ -16,13 +16,13 @@ extension DioResponse<T> on Response<T> {
 
   ApiBadResponse? statusCodeHandler() {
     return switch (statusCode) {
-      400 => const ApiBadRequest(statusCode),
-      401 => const ApiUnauthorized(statusCode),
-      403 => const ApiForbidden(statusCode),
-      404 => const ApiMethodNotFound(statusCode),
-      405 => const ApiMethodNotAllowed(statusCode),
-      500 => const ApiServerError(statusCode),
-      503 => const ApiServerUnavailable(statusCode),
+      400 => const ApiBadRequest(),
+      401 => const ApiUnauthorized(),
+      403 => const ApiForbidden(),
+      404 => const ApiMethodNotFound(),
+      405 => const ApiMethodNotAllowed(),
+      500 => const ApiServerError(),
+      503 => const ApiServerUnavailable(),
       _ => null,
     };
   }

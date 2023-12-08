@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../app/di/app_locator.dart';
-import '../app/utils/state_management/state_extensions.dart';
-import '../app/utils/state_management/vm_builder.dart';
+import '../di/app_locator.dart';
+import '../localization/generated/l10n.dart';
+import '../navigation/app_navigation.dart';
+import '../utils/state_management/state_extensions.dart';
+import '../utils/state_management/vm_builder.dart';
 import 'app_vm.dart';
-import 'localization/generated/l10n.dart';
-import 'navigation/app_navigation.dart';
 
 class App extends StatelessWidget {
   const App({super.key});

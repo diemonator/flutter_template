@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:result_dart/result_dart.dart';
 
-import '../../../app/localization/generated/l10n.dart';
+import '../../../core/localization/generated/l10n.dart';
 import '../../exceptions/app_settings_exception.dart';
 import '../models/locale_data.dart';
 import '../repositories/locale_settings_repo.dart';

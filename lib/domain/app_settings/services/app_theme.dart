@@ -3,7 +3,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:result_dart/result_dart.dart';
 
-import '../../../app/constants/consts.dart';
+import '../../../core/constants/consts.dart';
 import '../../exceptions/app_settings_exception.dart';
 import '../mappers/theme_mappers.dart';
 import '../models/theme_state.dart';

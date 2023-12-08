@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../../app/constants/consts.dart';
+import '../../../../core/constants/consts.dart';
 import '../locale_data.dart';
 import '../theme_state.dart';
 

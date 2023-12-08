@@ -1,7 +1,7 @@
 import 'package:regexed_validator/regexed_validator.dart';
 import 'package:result_dart/result_dart.dart';
 
-import '../../../app/utils/state_management/base_vm.dart';
+import '../../../core/utils/state_management/base_vm.dart';
 import '../../../domain/auth/services/auth.dart';
 import '../../../domain/exceptions/user_exception.dart';
 

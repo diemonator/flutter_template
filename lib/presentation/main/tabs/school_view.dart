@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../app/localization/generated/l10n.dart';
+import '../../../core/localization/generated/l10n.dart';
 
 class SchoolView extends StatelessWidget {
   const SchoolView({super.key});

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../models/tab_items.dart';
+import '../../../core/navigation/app_routes.dart';
 
 class MainBody extends StatelessWidget {
   const MainBody(this._navigationShell, {super.key});
@@ -11,13 +11,14 @@ class MainBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.sizeOf(context).width;
+    final navRailItems = AppRoutes.navRailItems;
 
     return Row(
       children: [
         if (screenWidth > 600)
           NavigationRail(
             extended: true,
-            destinations: TabItems.navOf(context),
+            destinations: navRailItems,
             selectedIndex: _navigationShell.currentIndex,
             onDestinationSelected: _navigationShell.goBranch,
           ),
