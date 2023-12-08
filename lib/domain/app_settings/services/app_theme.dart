@@ -3,31 +3,22 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:result_dart/result_dart.dart';
 
-import '../../../core/constants/consts.dart';
 import '../../exceptions/app_settings_exception.dart';
 import '../mappers/theme_mappers.dart';
 import '../models/theme_state.dart';
 import '../repositories/theme_settings_repo.dart';
 
 final class AppTheme extends ChangeNotifier {
-  AppTheme(this._themeSettingsRepo) {
+  AppTheme(
+    this.theme,
+    this.darkTheme,
+    this._themeSettingsRepo,
+  ) {
     _themeState = _initialiseTheme;
   }
 
-  final ThemeData theme = ThemeData(
-    fontFamily: Consts.fontFamily,
-    useMaterial3: true,
-    brightness: Brightness.light,
-    colorSchemeSeed: Colors.blue,
-  );
-
-  final ThemeData darkTheme = ThemeData(
-    fontFamily: Consts.fontFamily,
-    useMaterial3: true,
-    brightness: Brightness.dark,
-    colorSchemeSeed: Colors.blue,
-  );
-
+  final ThemeData theme;
+  final ThemeData darkTheme;
   final ThemeSettingsRepo _themeSettingsRepo;
   late ThemeState _themeState;
 

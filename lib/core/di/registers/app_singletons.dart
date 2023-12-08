@@ -11,7 +11,7 @@ Future<void> _setupSingletons(GetIt locator) async {
     ..registerLazySingleton<UserRepo>(() => userRepo)
     ..registerLazySingleton(() => Auth(userRepo))
     ..registerLazySingleton(() => AppLocalization(appSettingsRepo))
-    ..registerLazySingleton(() => AppTheme(appSettingsRepo));
+    ..registerLazySingleton(() => AppTheme(theme, darkTheme, appSettingsRepo));
 }
 
 Future<AppSettingsRepoImpl> _setupAppSettingsStorage() async {
